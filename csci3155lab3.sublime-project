@@ -1,0 +1,40 @@
+{
+	"folders":
+	[
+		{
+			"path": ".",
+			"folder_exclude_patterns": ["lib"],
+			"file_exclude_patterns": ["*.pdf", "*.zip"]
+		}
+	],
+	"settings":
+	{
+		"tab_size": 2,
+		"translate_tabs_to_spaces": true
+	},
+	"build_systems": 
+	[
+		{
+			"name": "SBT",
+			"working_dir": "$project_path",
+			"path": "/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/local/bin:/opt/local/sbin:",
+			"cmd": ["sbt", "-Dsbt.log.noformat=true", "test"],
+			"windows":
+			{
+				"path" : "%SystemRoot%\\system32;%SystemRoot%;%SystemRoot%\\System32\\Wbem;%SYSTEMROOT%\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\TortoiseGit\\bin;c:\\Program Files (x86)\\Microsoft ASP.NET\\ASP.NET Web Pages\\v1.0\\;C:\\Program Files\\SafeNet\\Authentication\\SAC\\x32;C:\\Program Files\\SafeNet\\Authentication\\SAC\\x64;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\Java\\jre7\\bin;C:\\Program Files (x86)\\Windows Live\\Shared;C:\\Program Files (x86)\\scala\\bin;C:\\Program Files (x86)\\sbt\\;C:\\Program Files\\Java\\jdk1.6.0_37\\bin;C:\\Program Files (x86)\\Git\\bin",
+				"cmd": ["sbt.bat", "-Dsbt.log.noformat=true", "test"]
+			}
+		},
+		{
+			"name": "Autograder",
+			"working_dir": "$project_path",
+			"path": "/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/local/bin:/opt/local/sbin:",
+			"cmd": ["./submit.py"],
+			"windows":
+			{
+				"path" : "%SystemRoot%\\system32;%SystemRoot%;%SystemRoot%\\System32\\Wbem;%SYSTEMROOT%\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\TortoiseGit\\bin;c:\\Program Files (x86)\\Microsoft ASP.NET\\ASP.NET Web Pages\\v1.0\\;C:\\Program Files\\SafeNet\\Authentication\\SAC\\x32;C:\\Program Files\\SafeNet\\Authentication\\SAC\\x64;C:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files (x86)\\Java\\jre7\\bin;C:\\Program Files (x86)\\Windows Live\\Shared;C:\\Program Files (x86)\\scala\\bin;C:\\Program Files (x86)\\sbt\\;C:\\Program Files\\Java\\jdk1.6.0_37\\bin;C:\\Program Files (x86)\\Git\\bin",
+				"cmd": ["python", "submit.py"]
+			}
+		}
+	]
+}
