@@ -47,6 +47,13 @@ class ArithmeticSpec extends FlatSpec {
     assert(e3 === N(3))
   }
 
+  /*"Plus" should "add a number and a string and return a string using small-step semantics" in {
+    val e1 = N(12)
+    val e2 = S("noelle")
+    val e3 = iterateStep(Binary(Plus, e1, e2))
+    assert(e3 === S("12.0noelle"))
+  }*/
+
   "Plus" should "also be able to concatenate strings using small-step semantics" in {
     val e1 = S("Hello")
     val e2 = S("World")

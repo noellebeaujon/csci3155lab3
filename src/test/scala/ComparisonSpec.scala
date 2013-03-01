@@ -74,6 +74,13 @@ class ComparisonSpec extends FlatSpec {
     assert(e3 === B(true))
   } 
 
+  "Le" should "return true if number and string are the same using big-step semantics 3" in {
+    val e1 = N(5)
+    val e2 = S("5")
+    val e3 = evaluate(Binary(Le, e1, e2))
+    assert(e3 === B(true))
+  } 
+
   "Gt" should "return true if the first expression is greater than the second using big-step semantics" in {
     val e1 = N(8)
     val e2 = N(7)

@@ -3,10 +3,10 @@ object Lab3 {
   
   /*
    * CSCI 3155: Lab 3 
-   * <Your Name>
+   * Noelle Beaujon
    * 
-   * Partner: <Your Partner's Name>
-   * Collaborators: <Any Collaborators>
+   * Partner: Taylor Kohn
+   * Collaborators: Ken Sheedlo, James Pfaff
    */
 
   /*
@@ -97,7 +97,13 @@ object Lab3 {
       case Unary(Neg, e1) => N(- eToN(e1))
       case Unary(Not, e1) => B(! eToB(e1))
       
-      case Binary(Plus, e1, e2) => N(eToN(e1) + eToN(e2))
+      case Binary(Plus, e1, e2) => 
+        (eval(env, e1), eval(env, e2)) match {
+          case (S(s1), S(s2)) => S(s1 + s2)
+          case (S(s1), v2) => S(s1 + toString(v2))     
+          case (v1, S(s2)) => S(toString(v1) + s2)
+          case (v1, v2) => N(eToN(e1) + eToN(e2))    
+          }
         
       case Binary(Minus, e1, e2) => N(eToN(e1) - eToN(e2))
       case Binary(Times, e1, e2) => N(eToN(e1) * eToN(e2))
@@ -106,10 +112,37 @@ object Lab3 {
       case Binary(Eq, e1, e2) => B(eToVal(e1) == eToVal(e2))
       case Binary(Ne, e1, e2) => B(eToVal(e1) != eToVal(e2))
       
-      case Binary(Lt, e1, e2) => B(eToN(e1) < eToN(e2))
-      case Binary(Le, e1, e2) => B(eToN(e1) <= eToN(e2))
-      case Binary(Gt, e1, e2) => B(eToN(e1) > eToN(e2))
-      case Binary(Ge, e1, e2) => B(eToN(e1) >= eToN(e2))
+      case Binary(Lt, e1, e2) => //B(eToN(e1) < eToN(e2))
+          (eval(env, e1), eval(env, e2)) match {
+            case (S(s1), S(s2)) => B(s1 < s2)
+            case (S(s1), v2) => B(s1 < toString(v2))    
+            case (v1, S(s2)) => B(toString(v1) < s2)
+            case (v1, v2) => B(eToN(e1) < eToN(e2))    
+            }
+
+      case Binary(Le, e1, e2) => //B(eToN(e1) <= eToN(e2))
+          (eval(env, e1), eval(env, e2)) match {
+            case (S(s1), S(s2)) => B(s1 <= s2)
+            case (S(s1), v2) => B(s1 <= toString(v2))    
+            case (v1, S(s2)) => B(toString(v1) <= s2)
+            case (v1, v2) => B(eToN(e1) <= eToN(e2))    
+            }
+
+      case Binary(Gt, e1, e2) => 
+          (eval(env, e1), eval(env, e2)) match {
+            case (S(s1), S(s2)) => B(s1 > s2)
+            case (S(s1), v2) => B(s1 > toString(v2))    
+            case (v1, S(s2)) => B(toString(v1) > s2)
+            case (v1, v2) => B(eToN(e1) > eToN(e2))    
+            }
+
+      case Binary(Ge, e1, e2) =>
+          (eval(env, e1), eval(env, e2)) match {
+            case (S(s1), S(s2)) => B(s1 >= s2)
+            case (S(s1), v2) => B(s1 >= toString(v2))    
+            case (v1, S(s2)) => B(toString(v1) >= s2)
+            case (v1, v2) => B(eToN(e1) >= eToN(e2))    
+            }
       
       case Binary(And, e1, e2) => if (eToB(e1)) eToVal(e2) else B(false)
       case Binary(Or, e1, e2) => if (eToB(e1)) B(true) else eToVal(e2)
@@ -150,6 +183,58 @@ object Lab3 {
       
       /* Inductive Cases: Search Rules */
       case Print(e1) => Print(step(e1))
+
+      case Unary(Neg, N(n1)) => N(-n1)
+      case Unary(Not, B(n1)) => B(!n1)
+
+      case Binary(Plus, N(n1), N(n2)) => N(n1 + n2)
+      case Binary(Plus, N(n1), S(n2)) => S(n1 + n2)
+      case Binary(Plus, S(n1), N(n2)) => S(n1 + n2)
+      case Binary(Plus, S(n1), S(n2)) => S(n1 + n2)      
+
+      case Binary(Minus, N(n1), N(n2)) => N(n1 - n2)
+      case Binary(Times, N(n1), N(n2)) => N(n1 * n2)
+      case Binary(Div, N(n1), N(n2)) => N(n1 / n2)
+
+
+      /*case Binary(Eq, n1, n2) => if (isValue(n1) && isValue(n2)) B(n1 == n2) 
+      case Binary(Eq, n1, e2) => if (isValue(n1)) Binary(Eq, n1, step(e2))
+
+
+      case Binary(Ne, n1, n2) => if (isValue(n1) && isValue(n2)) B(n1 != n2)
+      case Binary(Ne, n1, e2) => if (isValue(n1)) Binary(Ne, n1, step(e2))*/
+
+      case Binary(Lt, N(n1), N(n2)) => B(n1 < n2)
+      case Binary(Lt, S(n1), S(n2)) => B(n1 < n2)
+      case Binary(Lt, N(n1), S(n2)) => B(toString(N(n1)) < n2)
+      case Binary(Lt, S(n1), N(n2)) => B(n1 < toString(N(n2)))
+
+      case Binary(Le, N(n1), N(n2)) => B(n1 <= n2)
+      case Binary(Le, S(n1), N(n2)) => B(n1 <= toString(N(n2)))
+      case Binary(Le, N(n1), S(n2)) => B(toString(N(n1)) <= toString(S(n2)))
+      case Binary(Le, S(n1), S(n2)) => B(n1 <= n2)
+
+
+      case Binary(Ge, N(n1), N(n2)) => B(n1 >= n2)
+      case Binary(Ge, S(n1), S(n2)) => B(n1 >= n2)
+      case Binary(Ge, N(n1), S(n2)) => B(toString(N(n1)) >= n2)
+      case Binary(Ge, S(n1), N(n2)) => B(n1 >= toString(N(n2)))
+
+      case Binary(Gt, N(n1), N(n2)) => B(n1 > n2)
+      case Binary(Gt, S(n1), S(n2)) => B(n1 > n2)      
+      case Binary(Gt, N(n1), S(n2)) => B(toString(N(n1)) > n2)
+      case Binary(Gt, S(n1), N(n2)) => B(n1 > toString(N(n2)))
+
+      case Binary(And, v1, e2) => if (toBoolean(v1)) e2 else B(false) 
+      case Binary(Or, v1, e2) => if (toBoolean(v1)) B(true) else e2
+
+      case Binary(Seq, v1, e2) => e2
+
+      case If(v1, e2, e3) => if(toBoolean(v1)) e2 else e3
+
+      //case ConstDecl(x, e1, e2) => eval(extend(env, x, eToVal(e1)), e2)
+
+
       
       case _ => throw new UnsupportedOperationException
     }
